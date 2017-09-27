@@ -1,11 +1,2 @@
-# netty-websocket
-
-## launch
-
-At first, java 8 should be supported in your server.
-
-Run `net.mengkang.WebSocketServer` in IDE, Then you can open the `client.html` in your browser for testing.
-
-## benchmark
-
-you can use the script `banchmark.py` in command line.# netty-websocket
+一个非常简单的使用netty服务端，websocket为客户端的例子
+封装了一个js，页面进行调用
