@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WebSocket Chat</title>
+<script src="./FmzgIM.js"></script>
+
+</head>
+<body>
+
+<form onsubmit="return false;" id="myForm">
+	<input type="text" name="userToken" value="userToken"/><br/>
+	<input type="text" name="groupId" value="groupId"/><br/>
+    <input type="text" name="message" value="Hello, World!"/><br/>
+    <input type="button" value="connect" onclick="connect()"/><br/>
+    <input type="button" value="Send Web Socket Data" onclick="send(this.form.message.value,this.form.groupId.value)"/>
+</form>
+<script type="text/javascript">
+var conn=null;
+function connect() {
+	
+	//usetoken:aaa,bbb,ccc
+	var userToken=document.forms["myForm"]["userToken"].value;
+	conn=new FmzgIM.connection("ws://localhost:8083",userToken);
+	conn.listen({
+	    onOpened: function ( message ) {
+	            console.log(userToken+" 打开了"); 
+	    },  
+	    onClosed: function ( message ) {
+	    	console.log(userToken+" 关闭了");
+	    },
+	    onMessage: function ( message ) {
+	    	console.log(userToken+" : "+message);
+	    }
+	});
+}
+	
+
+
+    function send(message,groupId) {
+    	var id = conn.getUniqueId(); 
+    	var msg = new FmzgIM.message(id,"txt");      // 创建文本消息
+        msg.set({
+            msg: message,                  // 消息内容
+            to: groupId,                          // 接收消息对象（用户id）
+            chatType: 'groupChat',
+            success: function (id, serverMsgId) {
+            },
+            fail: function (message) {
+                console.log('fail:'+message);
+            }
+        });
+    	conn.send(msg);
+    }
+</script>
+</body>
+</html>
